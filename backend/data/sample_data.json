@@ -1,0 +1,50 @@
+[
+  {
+    "title": "MacBook Pro 2023",
+    "description": "Like new MacBook Pro M2, 16GB RAM, 512GB SSD. Includes charger and original box.",
+    "price": 1299.99,
+    "category": "Electronics",
+    "date_posted": "2024-03-15",
+    "status": "Active"
+  },
+  {
+    "title": "Downtown Studio Apartment",
+    "description": "Modern studio in prime location. Utilities included. Available immediately.",
+    "price": 1500.0,
+    "category": "Property",
+    "date_posted": "2024-03-14",
+    "status": "Active"
+  },
+  {
+    "title": "2020 Toyota Camry",
+    "description": "Single owner, 25k miles, excellent condition. Full service history available.",
+    "price": 22500.0,
+    "category": "Vehicle",
+    "date_posted": "2024-03-10",
+    "status": "Active"
+  },
+  {
+    "title": "Sony 65\" 4K Smart TV",
+    "description": "4K Ultra HD Smart LED TV. 6 months old, perfect condition with warranty.",
+    "price": 799.99,
+    "category": "Electronics",
+    "date_posted": "2024-03-08",
+    "status": "Inactive"
+  },
+  {
+    "title": "Mountain Bike - Trek X-Caliber",
+    "description": "2023 Trek X-Caliber 8, size Large. Barely used, includes accessories.",
+    "price": 899.99,
+    "category": "Sports",
+    "date_posted": "2024-03-12",
+    "status": "Active"
+  },
+  {
+    "title": "Mountain Bike - XXX",
+    "description": "2025 Awesome Mountain Bike. Barely used, includes accessories.",
+    "price": 1299.99,
+    "category": "Sports",
+    "date_posted": "2025-03-12",
+    "status": "Active"
+  }
+]
