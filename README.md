@@ -16,6 +16,7 @@ Runs on localhost:3000
 
 ## Technical Challenges & Solutions
 
+
 ### Data Layer
 
 - **Problem**: Caching
@@ -49,6 +50,13 @@ Runs on localhost:3000
   ```vue
   <DeleteDialog v-model="showDialog" @confirm="handleDelete" />
   ```
+
+### Backend Init
+
+- **Problem**:  starting from scratch without data
+- **Solution**: I built upon my own PHP api repo for this so added some helper functions to init a db with sample data
+- These commands can be found in /public folder but are not documented on the api
+
 
 ### UX Improvements
 
