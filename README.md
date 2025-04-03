@@ -1,73 +1,71 @@
-## Problem Solving Journey & Solutions
+# Listings App
 
-### Data Fetching & Caching
+## Setup
 
-- **Issue**: Initial implementation had redundant data fetching logic
-- **Solution**: Implemented `useAsyncData` for efficient caching and data management
-- **Trade-off**: Chose client-side pagination over API pagination for simplicity and reduced server load
-- **Scalability**: Cache invalidation strategy in place for CRUD operations
+```bash
+npm i && npm run dev
+```
 
-### State Management
+Runs on localhost:3000
 
-- **Issue**: Filters weren't persisting and affecting pagination incorrectly
-- **Solution**:
-  - Created global filter state using `useState`
-  - Implemented filter-then-paginate logic
-  - Added page reset on filter changes
-- **Trade-off**: Global state vs prop drilling
+## Stack
 
-### API Response Handling
+- Nuxt (Vue + Typescript)
+- Tailwind CSS
+- PHP Backend w/ MySQL
 
-- **Issue**: Single listing fetch returning 404 on direct URL access
-- **Solution**: Improved error handling and response type checking
-- **Scalability**: Added proper TypeScript interfaces for API responses
+## Technical Challenges & Solutions
 
-### UI/UX Improvements
+### Data Layer
 
-- **Issue**: No feedback for successful operations
-- **Solution**: Added flash messages using URL query params
-- **Trade-off**: Chose URL params over state management for simplicity
+- **Problem**: Caching
+- **Solution**: Implemented useAsyncData pattern
+  ```ts
+  const { data: listings } = useAsyncData("listings", () =>
+    service.fetchItems()
+  );
+  ```
+- **Result**: Better caching
 
-### Component Design
+### State Managment
 
-- **Issue**: Delete dialog logic duplicated across pages
-- **Solution**: Created reusable `DeleteDialog` component
-- **Scalability**: Modular design for easy maintenance
+- **Issue**: Filter state inconsistent, Pagination and filters not consistent
+- **Solution**: Global filter state, computed filtering
 
-### Form Handling
+  ```ts
+  // Global filter state
+  const filters = useState('filters', () => ({...}))
 
-- **Issue**: Form values not displaying correctly (case sensitivity)
-- **Solution**: Standardized case handling for status values
-- **Trade-off**: Frontend validation vs backend normalization
+  // Filter with computed
+  const filtered = computed(() =>
+    listings.value?.filter(...)
+  )
+  ```
 
-### Performance Optimizations
+### Component Structure
 
-- **Issue**: Unnecessary re-renders with filter changes
-- **Solution**:
-  - Implemented debounced search
-  - Added computed properties for filtered results
-- **Scalability**: Ready for larger datasets with pagination
+- **Problem**: Repeated dialog logic
+- **Solution**: Reusable component (didnt use on multiple pages)
+  ```vue
+  <DeleteDialog v-model="showDialog" @confirm="handleDelete" />
+  ```
 
-### Visual Feedback
+### UX Improvements
 
-- **Issue**: Lack of loading states and transitions
-- **Solution**: Added loading spinners and smooth transitions
-- **Trade-off**: Enhanced UX vs slight performance overhead
+- Loading states
+- Flash messages via URL params
+- Debounced search
+- Pagination after filters
 
-## Future Considerations
+### Performance
 
-### Potential Improvements
+- Client-side pagination/filtering
+- Computed properties
+- Minimal transitions
 
-- Implement server-side pagination for larger datasets
-- Add caching headers for better performance
-- Implement optimistic updates for better UX
-- Add end-to-end testing
-- Consider implementing real-time updates
+## Limitations
 
-### Scalability Notes
-
-- Current client-side filtering works well for small to medium datasets
-- Consider implementing backend search for large datasets
-- Image handling should be moved to CDN for production
-- Add rate limiting for API endpoints
-- Consider implementing service worker for offline capability
+- Client side pagination/filtering
+- No image CDN
+- Basic error handling
+- Missing tests
