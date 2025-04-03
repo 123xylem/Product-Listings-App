@@ -7,3 +7,30 @@
 */vendor
 */logs
 */.output
+
+# Frontend
+frontend/node_modules
+frontend/.nuxt
+frontend/.output
+frontend/dist
+frontend/.env
+!frontend/.env.example
+
+# Backend
+backend/vendor
+backend/logs/*
+!backend/logs/.gitkeep
+backend/.env
+!backend/.env.example
+
+# System
+.DS_Store
+*.log
+
+# IDE
+.idea
+.vscode
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
