@@ -15,7 +15,7 @@ try {
             description TEXT,
             price DECIMAL(10,2) NOT NULL,
             category VARCHAR(50) NOT NULL,
-            date_posted DATE NOT NULL,
+            date_posted TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
             status VARCHAR(20) NOT NULL
         )
     ");

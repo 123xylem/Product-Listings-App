@@ -1,6 +1,6 @@
 <template>
   <div
-    class="border rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow"
+    class="bg-gradient-to-br p-4 from-gray-50 to-white border border-gray-100 rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-all duration-200 transform hover:-translate-y-1"
   >
     <h2 class="text-xl font-semibold mb-2">{{ listing.title }}</h2>
     <p class="text-gray-600 mb-2">{{ listing.description }}</p>
@@ -26,7 +26,7 @@
       </NuxtLink>
       <button
         @click="$emit('delete', listing.id)"
-        class="text-red-500 hover:text-red-700"
+        class="text-red-500 delete-button hover:text-red-700"
       >
         Delete
       </button>

@@ -13,17 +13,17 @@ class listingRepository
 
   public function saveListing($listingData)
   {
-    $sql = "INSERT INTO listings ( title, description, price, category, date_posted, status) 
-            VALUES (:title, :description, :price, :category, :date_posted, :status);";
+    $sql = "INSERT INTO listings ( title, description, price, category, status) 
+            VALUES (:title, :description, :price, :category,  :status);";
     $params = [
       ':title' => $listingData['title'],
       ':description' => $listingData['description'],
-      ':date_posted' => $listingData['date_posted'],
       ':price' => $listingData['price'],
       ':category' => $listingData['category'],
       ':status' => $listingData['status'],
     ];
     $this->db->query($sql, $params);
+    $listingData['id'] = $this->db->lastInsertId();
     return $listingData;
   }
 
@@ -55,7 +55,6 @@ class listingRepository
       ':description' => $currentListing['description'],
       ':price' => $currentListing['price'],
       ':category' => $currentListing['category'],
-      ':date_posted' => $currentListing['date_posted'],
       ':status' => $currentListing['status']
     ];
 
@@ -64,7 +63,6 @@ class listingRepository
     if (isset($listingData['description'])) $params[':description'] = $listingData['description'];
     if (isset($listingData['price'])) $params[':price'] = $listingData['price'];
     if (isset($listingData['category'])) $params[':category'] = $listingData['category'];
-    if (isset($listingData['date_posted'])) $params[':date_posted'] = $listingData['date_posted'];
     if (isset($listingData['status'])) $params[':status'] = $listingData['status'];
 
     $sql = "UPDATE listings 
@@ -72,7 +70,6 @@ class listingRepository
                 description = :description, 
                 price = :price,
                 category = :category,
-                date_posted = :date_posted,
                 status = :status
             WHERE id = :id";
 

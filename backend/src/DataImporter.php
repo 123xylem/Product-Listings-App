@@ -31,7 +31,6 @@ class DataImporter
         'description' => $listing['description'] ?? null,
         'price' => $listing['price'] ?? null,
         'category' => $listing['category'] ?? null,
-        'date_posted' => $listing['date_posted'] ?? null,
         'status' => $listing['status'] ?? null
       ];
     }, $this->listingData);

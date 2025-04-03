@@ -79,8 +79,8 @@ $router->addRoute('POST', '/listings', function ($params) {
     $postdata = file_get_contents("php://input");
     $request = json_decode($postdata, true);
 
-    // Validate required fields
-    $requiredFields = ['title', 'description', 'price', 'category', 'date_posted', 'status'];
+    // Validate  fields
+    $requiredFields = ['title', 'description', 'price', 'category', 'status'];
     foreach ($requiredFields as $field) {
         if (!isset($request[$field]) || empty($request[$field])) {
             return ApiResponse::error("Missing required field: $field");

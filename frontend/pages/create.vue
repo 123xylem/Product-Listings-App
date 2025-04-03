@@ -2,7 +2,10 @@
   <div class="max-w-2xl mx-auto">
     <h1 class="text-2xl font-bold mb-6">Create New Listing</h1>
 
-    <form @submit.prevent="handleSubmit" class="space-y-6">
+    <form
+      @submit.prevent="handleSubmit"
+      class="space-y-6 border shadow-lg bg-blue-50 p-4 rounded-md"
+    >
       <div>
         <label for="title" class="block text-sm font-medium text-gray-700"
           >Title</label
@@ -18,7 +21,23 @@
           {{ errors.title }}
         </p>
       </div>
-
+      <div>
+        <label for="status" class="block text-sm font-medium text-gray-700"
+          >Status</label
+        >
+        <select
+          id="status"
+          v-model="form.status"
+          class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+          :class="{ 'border-red-500': errors.status }"
+        >
+          <option value="active">Active</option>
+          <option value="inactive">Inactive</option>
+        </select>
+        <p v-if="errors.status" class="mt-1 text-sm text-red-600">
+          {{ errors.status }}
+        </p>
+      </div>
       <div>
         <label for="description" class="block text-sm font-medium text-gray-700"
           >Description</label
@@ -34,7 +53,21 @@
           {{ errors.description }}
         </p>
       </div>
-
+      <div>
+        <label for="price" class="block text-sm font-medium text-gray-700"
+          >Price</label
+        >
+        <input
+          id="price"
+          v-model="form.price"
+          type="number"
+          class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+          :class="{ 'border-red-500': errors.price }"
+        />
+        <p v-if="errors.price" class="mt-1 text-sm text-red-600">
+          {{ errors.price }}
+        </p>
+      </div>
       <div>
         <label for="category" class="block text-sm font-medium text-gray-700"
           >Category</label
@@ -59,34 +92,6 @@
         </p>
       </div>
 
-      <div>
-        <label class="block text-sm font-medium text-gray-700">Image</label>
-        <div class="mt-1 flex items-center">
-          <div class="relative">
-            <input
-              type="file"
-              accept="image/*"
-              @change="handleImageUpload"
-              class="hidden"
-              ref="fileInput"
-            />
-            <button
-              type="button"
-              @click="$refs.fileInput.click()"
-              class="inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50"
-            >
-              Choose Image
-            </button>
-          </div>
-          <div v-if="imagePreview" class="ml-4">
-            <img
-              :src="imagePreview"
-              class="h-20 w-20 object-cover rounded-md"
-            />
-          </div>
-        </div>
-      </div>
-
       <div class="flex justify-end space-x-4">
         <NuxtLink
           to="/"
@@ -109,32 +114,37 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import { useRouter } from "nuxt/app";
+import { useListings } from "../composables/useListings";
+const { createListing } = useListings();
 
 const router = useRouter();
 const loading = ref(false);
-const imagePreview = ref("");
-const fileInput = ref<HTMLInputElement | null>(null);
 
 const form = ref({
   title: "",
   description: "",
   category: "",
-  image: null as File | null,
+  price: "",
+  status: "Active",
 });
 
 const errors = ref({
   title: "",
   description: "",
   category: "",
+  price: "",
+  status: "",
 });
 
-const categories = ["Electronics", "Fashion", "Home", "Sports", "Other"];
+const categories = ["Electronics", "Vehicle", "Property", "Sports"];
 
 const validateForm = () => {
   errors.value = {
     title: "",
     description: "",
     category: "",
+    price: "",
+    status: "",
   };
 
   if (!form.value.title) {
@@ -152,16 +162,17 @@ const validateForm = () => {
     return false;
   }
 
-  return true;
-};
-
-const handleImageUpload = (event: Event) => {
-  const target = event.target as HTMLInputElement;
-  if (target.files && target.files[0]) {
-    const file = target.files[0];
-    form.value.image = file;
-    imagePreview.value = URL.createObjectURL(file);
+  if (!form.value.price) {
+    errors.value.price = "Price is required";
+    return false;
   }
+
+  if (!form.value.status) {
+    errors.value.status = "Status is required";
+    return false;
+  }
+
+  return true;
 };
 
 const handleSubmit = async () => {
@@ -169,10 +180,10 @@ const handleSubmit = async () => {
 
   loading.value = true;
   try {
-    // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-    // Handle successful submission
-    router.push("/");
+    const newListing = await createListing(form.value);
+    if (newListing) {
+      router.push(`/${newListing.id}?isNew=true`);
+    }
   } catch (error) {
     console.error("Error submitting form:", error);
   } finally {

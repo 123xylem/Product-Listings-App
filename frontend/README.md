@@ -1,75 +1,71 @@
-# Nuxt Minimal Starter
-
-Look at the [Nuxt documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
+# Listings App
 
 ## Setup
 
-Make sure to install dependencies:
-
 ```bash
-# npm
-npm install
-
-# pnpm
-pnpm install
-
-# yarn
-yarn install
-
-# bun
-bun install
+npm i && npm run dev
 ```
 
-## Development Server
+Runs on localhost:3000
 
-Start the development server on `http://localhost:3000`:
+## Stack
 
-```bash
-# npm
-npm run dev
+- Nuxt (Vue + Typescript)
+- Tailwind CSS
+- PHP Backend w/ MySQL
 
-# pnpm
-pnpm dev
+## Technical Challenges & Solutions
 
-# yarn
-yarn dev
+### Data Layer
 
-# bun
-bun run dev
-```
+- **Problem**: Caching
+- **Solution**: Implemented useAsyncData pattern
+  ```ts
+  const { data: listings } = useAsyncData("listings", () =>
+    service.fetchItems()
+  );
+  ```
+- **Result**: Better caching
 
-## Production
+### State Managment
 
-Build the application for production:
+- **Issue**: Filter state inconsistent, Pagination and filters not consistent
+- **Solution**: Global filter state, computed filtering
 
-```bash
-# npm
-npm run build
+  ```ts
+  // Global filter state
+  const filters = useState('filters', () => ({...}))
 
-# pnpm
-pnpm build
+  // Filter with computed
+  const filtered = computed(() =>
+    listings.value?.filter(...)
+  )
+  ```
 
-# yarn
-yarn build
+### Component Structure
 
-# bun
-bun run build
-```
+- **Problem**: Repeated dialog logic
+- **Solution**: Reusable component (didnt use on multiple pages)
+  ```vue
+  <DeleteDialog v-model="showDialog" @confirm="handleDelete" />
+  ```
 
-Locally preview production build:
+### UX Improvements
 
-```bash
-# npm
-npm run preview
+- Loading states
+- Flash messages via URL params
+- Debounced search
+- Pagination after filters
 
-# pnpm
-pnpm preview
+### Performance
 
-# yarn
-yarn preview
+- Client-side pagination/filtering
+- Computed properties
+- Minimal transitions
 
-# bun
-bun run preview
-```
+## Limitations
 
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
+- Client side pagination/filtering
+- No image CDN
+- Basic error handling
+- Missing tests

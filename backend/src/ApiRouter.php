@@ -14,16 +14,18 @@ class ApiRouter
     ];
   }
 
+
+  //HAndle requests and route to correct handler
   public function handleRequest()
   {
     // Start clean - no output before headers
     $method = $_SERVER['REQUEST_METHOD'];
     $path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 
-    // Log instead of var_dump for debugging
+
     error_log("Original path: " . $path);
 
-    // Remove base path if needed
+    // Remove base path 
     $basePath = '/api';
     if (strpos($path, $basePath) === 0) {
       $path = substr($path, strlen($basePath));
@@ -34,7 +36,7 @@ class ApiRouter
       $path = '/';
     }
 
-    // Remove trailing slash for consistency (except for root path)
+    // Remove trailing slash  
     if ($path !== '/' && substr($path, -1) === '/') {
       $path = rtrim($path, '/');
     }

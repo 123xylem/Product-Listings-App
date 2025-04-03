@@ -21,7 +21,6 @@ export default class ListingsService {
         : `${this.baseUrl}/listings`;
 
       const data = await $fetch<ApiResponse<ListingData[]>>(endpoint);
-      console.log(data, "DATA HREE");
       return data.data ?? [];
     } catch (error) {
       console.error("Error fetching items:", error);
@@ -41,10 +40,10 @@ export default class ListingsService {
             price: listingData.price,
             status: listingData.status,
             category: listingData.category,
-            date_posted: new Date().toISOString(),
           },
         }
       );
+
       if (!data.data) throw new Error("Failed to create listing");
       return data.data;
     } catch (error) {
