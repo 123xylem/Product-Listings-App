@@ -1,0 +1,275 @@
+# Listings App
+
+## Setup
+
+```bash
+npm i && npm run dev
+```
+
+Runs on localhost:3000
+
+## Stack
+
+- Nuxt (Vue + Typescript)
+- Tailwind CSS
+- PHP Backend w/ MySQL
+
+## Technical Challenges & Solutions
+
+### Data Layer
+
+- **Problem**: Caching
+- **Solution**: Implemented useAsyncData pattern
+  ```ts
+  const { data: listings } = useAsyncData("listings", () =>
+    service.fetchItems()
+  );
+  ```
+- **Result**: Better caching
+
+### State Managment
+
+- **Issue**: Filter state inconsistent, Pagination and filters not consistent
+- **Solution**: Global filter state, computed filtering
+
+  ```ts
+  // Global filter state
+  const filters = useState('filters', () => ({...}))
+
+  // Filter with computed
+  const filtered = computed(() =>
+    listings.value?.filter(...)
+  )
+  ```
+
+### Component Structure
+
+- **Problem**: Repeated dialog logic
+- **Solution**: Reusable component (didnt use on multiple pages)
+  ```vue
+  <DeleteDialog v-model="showDialog" @confirm="handleDelete" />
+  ```
+
+### Backend Init
+
+- **Problem**: starting from scratch without data
+- **Solution**: I built upon my own PHP api repo for this so added some helper functions to init a db with sample data
+- These commands can be found in /public folder but are not documented on the api
+
+### UX Improvements
+
+- Loading states
+- Flash messages via URL params
+- Debounced search
+- Pagination after filters
+
+### Performance
+
+- Client-side pagination/filtering
+- Computed properties
+- Minimal transitions
+
+## Limitations
+
+- Client side pagination/filtering
+- No image CDN
+- Basic error handling
+- Missing tests
+
+Basic Repository pattern api
+Has an api response formatter class
+has corsHeader class
+
+Classes could be namespaced with composer autoloader
+
+- Input validation
+- Error handling
+- Response formatting
+- CORS support
+- JSON payloads
+
+### 3. Database Layer
+
+- MySQL integration
+- Prepared statements
+
+### 4. Security
+
+- Input sanitization
+- CORS headers
+- Error masking
+- Validation rules
+
+Request FLow
+
+1. Request → public/api/index.php
+2. Bootstrap loads (error handling, autoloading, env)
+3. CORS headers applied
+4. Router matches endpoint
+5. Handler validates input
+6. Repository processes database operation
+7. ApiResponse formats and returns response
+
+### 1. Architecture
+
+- Basic separation of concerns (routing, data access, response handling)
+- Partial single responsibility in core components
+- Repository pattern for data access
+- Simple layered architecture (no service layer yet)
+
+### 2. Code Quality
+
+- Basic error handling with logging
+- Simple response formatting
+- Database abstraction
+
+Improvements:
+
+- Add type hinting throughout
+- Implement PSR-4 autoloading
+- Fix naming inconsistencies
+- Enhance error handling with custom exceptions
+
+### 3. Security
+
+- SQL injection via prepared statements
+- Basic CORS security with origin validation
+- Basic input validation
+
+Needs Improvement:
+
+- More comprehensive input validation
+- XSS prevention on backend
+- Data sanitization
+- Input length and format restrictions
+- Rate limiting
+- Authentication/Authorization (if needed)
+
+### 4. Performance
+
+- Prepared statements
+  -Improvements:
+  . cached routes
+  . pattern matching (take ints from id field before processing)
+  . check static routes before dynamic
+
+## Design Choices Analysis
+
+### Chosen
+
+1. **Simple Router**
+
+   - ✅ Easy to understand
+   - ✅ Lightweight
+   - ❌ Limited features
+     fast-router better
+
+2. **Service Layer**
+
+Improvements:
+Could be more Dependency injection for mock testing and decoupled components
+
+3. **Custom Response Helper**
+
+   - ✅ Consistent responses
+   - ✅ Simple implementation
+   - ❌ Less flexible
+
+4. **Manual Validation**
+   - ✅ Full control
+   - ✅ Simple rules
+   - ❌ More maintenance
+     Improvements: Laravel style custom validator
+
+
+### Alternatives Considered
+
+1. **Framework Router**
+
+   - More features
+   - Higher complexity
+   - Larger footprint
+
+2. **Direct Model Access**
+
+   - Simpler structure
+   - Less separation
+   - Harder to test
+
+3. **3rd Party Validators**
+   - More features
+   - External dependency
+   - Learning curve
+
+## Future Improvements
+
+- [ ] Cache layer
+- [ ] Rate limiting
+- [ ] Authentication
+- [ ] Request logging
+- [ ] API documentation
+
+
+
+
+FRONTEND:
+
+Request Flow:
+Entry: app.vue → pages/[...].vue
+                ↓
+composables/useListings.ts (Data/State Management)
+                ↓
+services/listings.ts (API Calls)
+                ↓
+Backend API
+
+
+Features:
+A. Pages
+- / (Index/List View)
+- /create (Create Form)
+- /{id} (Edit/Detail View)
+
+B. Features
+- List Listings
+- Create Listing
+- Edit Listing
+- Delete Listing
+- Filter Listings
+- View Single Listing
+
+C. Components
+- ListingCard
+- DeleteDialog
+
+D. State Management
+- useListings composable
+- useFilters composable
+
+E. Services
+- listings.ts (API integration)
+
+
+Detailed Features:
+
+// 1. Listing Management
+- CRUD operations via API
+- Form handling
+- Validation
+- Success/Error states
+
+// 2. UI Features
+- Loading states
+- Error handling
+- Responsive design
+- Confirmation dialogs
+
+// 3. Data Features
+- Filtering (title, category)
+- Debounced search
+- Data persistence
+
+
+Big improvements COULDVe USed useAsyncData for the listings and filters,loading and error states!
+
+I rushed the implemtnation using nuxt composables and asyncData.

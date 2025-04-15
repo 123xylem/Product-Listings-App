@@ -21,6 +21,7 @@
   },
   "devDependencies": {
     "@nuxtjs/eslint-config-typescript": "^12.1.0",
+    "@vue/runtime-core": "^3.5.13",
     "eslint": "^8.56.0",
     "typescript": "^5.3.3"
   }

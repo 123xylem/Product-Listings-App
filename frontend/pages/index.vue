@@ -92,6 +92,7 @@ const {
 
 const filters = useFilters();
 
+//redundant
 onMounted(() => {
   fetchListings();
 });

@@ -147,7 +147,7 @@ import { ref, onMounted, watch } from "vue";
 import { useRoute, useRouter } from "nuxt/app";
 import type { OptionalListingData } from "../types/listings";
 import { useListings } from "../composables/useListings";
-import DeleteDialog from "../components/DeleteDialog.vue";
+import DeleteDialog from "@/components/DeleteDialog.vue";
 
 const { updateListing, deleteListing, fetchSingleListing } = useListings();
 
